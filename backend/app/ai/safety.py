@@ -37,6 +37,17 @@ _DANGEROUS = [
 ]
 
 _READ_ONLY = re.compile(r"^(show|ping|traceroute|tracert|display|\?)\b", re.IGNORECASE)
+# Управляющие символы, позволяющие склеить несколько команд.
+_CHAINING = re.compile(r"[;&\n\r`$]")
+# Разрешённые фильтры вывода после "|" (show run | include vlan).
+_OUTPUT_FILTER = re.compile(r"^(include|exclude|begin|section|count|grep)\b", re.IGNORECASE)
+
+
+def _is_read_only(cmd: str) -> bool:
+    head, *filters = [part.strip() for part in cmd.split("|")]
+    if not _READ_ONLY.search(head):
+        return False
+    return all(_OUTPUT_FILTER.search(f) for f in filters)
 
 
 def assess(command: str) -> Assessment:
@@ -45,11 +56,15 @@ def assess(command: str) -> Assessment:
     if not cmd:
         return Assessment(command, Risk.CONFIG, "пустая команда")
     # Несколько команд в одной строке — не пропускаем как read-only.
-    if re.search(r"[;&|\n`$]", command):
+    if _CHAINING.search(command):
         return Assessment(command, Risk.DANGEROUS, "составная команда или управляющие символы")
     for pattern, reason in _DANGEROUS:
         if re.search(pattern, cmd, re.IGNORECASE):
             return Assessment(command, Risk.DANGEROUS, reason)
+    if "|" in cmd:
+        if _is_read_only(cmd):
+            return Assessment(command, Risk.READ_ONLY, "чтение с фильтром вывода")
+        return Assessment(command, Risk.DANGEROUS, "недопустимое использование конвейера")
     if _READ_ONLY.search(cmd):
         return Assessment(command, Risk.READ_ONLY, "команда только читает состояние")
     return Assessment(command, Risk.CONFIG, "изменение конфигурации")
@@ -57,3 +72,17 @@ def assess(command: str) -> Assessment:
 
 def assess_many(commands: list[str]) -> list[Assessment]:
     return [assess(c) for c in commands]
+
+
+def requires_confirmation(assessment: Assessment, approval_mode: str) -> bool:
+    """Нужно ли подтверждение пользователя при заданном режиме.
+
+    confirm       — подтверждать все команды;
+    readonly_auto — подтверждать всё, кроме read-only.
+    Опасные команды требуют подтверждения в любом режиме.
+    """
+    if assessment.risk is Risk.DANGEROUS:
+        return True
+    if approval_mode == "readonly_auto":
+        return assessment.needs_confirmation
+    return True
