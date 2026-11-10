@@ -1,18 +1,24 @@
+from contextlib import asynccontextmanager
+
 import httpx
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from .ai import safety
 from .ai.ollama_provider import OllamaProvider
-from .config import AISettings, settings
+from .config import APPROVAL_MODES, AISettings, ai_settings, settings
+from .routes import sessions
+from .session_registry import registry
 
-app = FastAPI(title="PIIS-ModernTerminal")
 
-_ai_settings = AISettings(
-    ollama_url=settings.ollama_url,
-    model=settings.ollama_model,
-    approval_mode=settings.approval_mode,
-)
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    yield
+    await registry.close_all()
+
+
+app = FastAPI(title="PIIS-ModernTerminal", lifespan=lifespan)
+app.include_router(sessions.router)
 
 
 class SafetyRequest(BaseModel):
@@ -26,23 +32,22 @@ async def health() -> dict[str, str]:
 
 @app.get("/api/ai/settings", response_model=AISettings)
 async def get_ai_settings() -> AISettings:
-    return _ai_settings
+    return ai_settings
 
 
 @app.put("/api/ai/settings", response_model=AISettings)
 async def put_ai_settings(new: AISettings) -> AISettings:
-    if new.approval_mode not in ("confirm", "readonly_auto"):
-        raise HTTPException(422, "approval_mode must be 'confirm' or 'readonly_auto'")
-    global _ai_settings
-    _ai_settings = new
-    return _ai_settings
+    if new.approval_mode not in APPROVAL_MODES:
+        raise HTTPException(422, f"approval_mode must be one of {APPROVAL_MODES}")
+    ai_settings.ollama_url = new.ollama_url
+    ai_settings.model = new.model
+    ai_settings.approval_mode = new.approval_mode
+    return ai_settings
 
 
 @app.get("/api/ai/models")
 async def list_models() -> dict[str, list[str]]:
-    provider = OllamaProvider(
-        _ai_settings.ollama_url, _ai_settings.model, settings.ollama_timeout
-    )
+    provider = OllamaProvider(ai_settings.ollama_url, ai_settings.model, settings.ollama_timeout)
     try:
         return {"models": await provider.list_models()}
     except httpx.HTTPError as exc:
@@ -58,7 +63,7 @@ async def check_commands(req: SafetyRequest) -> list[dict[str, object]]:
             "command": a.command,
             "risk": a.risk.value,
             "reason": a.reason,
-            "needs_confirmation": a.needs_confirmation,
+            "needs_confirmation": safety.requires_confirmation(a, ai_settings.approval_mode),
         }
         for a in safety.assess_many(req.commands)
     ]
