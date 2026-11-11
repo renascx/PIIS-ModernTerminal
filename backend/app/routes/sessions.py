@@ -2,6 +2,8 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from ..ai import safety
+from ..ai.agent import agent
+from ..audit import audit_log
 from ..config import ai_settings
 from ..connectors.base import ConnectorError
 from ..session_registry import Session, registry
@@ -49,6 +51,7 @@ async def list_sessions() -> list[dict[str, object]]:
 async def close_session(session_id: str) -> None:
     if not await registry.close(session_id):
         raise HTTPException(404, "Сессия не найдена")
+    agent.forget(session_id)
 
 
 @router.get("/{session_id}/output")
@@ -75,4 +78,6 @@ async def run_command(session_id: str, req: CommandRequest) -> dict[str, object]
         await session.connector.send_line(req.command)
     except ConnectorError as exc:
         raise HTTPException(502, str(exc)) from exc
+    decision = "confirmed" if req.confirmed else "auto"
+    audit_log.add(session_id, req.command, assessment.risk.value, decision, "manual")
     return {"sent": req.command, "risk": assessment.risk.value}

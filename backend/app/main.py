@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from .ai import safety
 from .ai.ollama_provider import OllamaProvider
 from .config import APPROVAL_MODES, AISettings, ai_settings, settings
-from .routes import sessions
+from .routes import assistant, sessions
 from .session_registry import registry
 
 
@@ -19,6 +19,7 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(title="PIIS-ModernTerminal", lifespan=lifespan)
 app.include_router(sessions.router)
+app.include_router(assistant.router)
 
 
 class SafetyRequest(BaseModel):

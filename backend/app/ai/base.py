@@ -27,3 +27,6 @@ class AIProvider(ABC):
         messages: list[ChatMessage],
         tools: list[dict[str, Any]] | None = None,
     ) -> ChatResponse: ...
+
+    async def aclose(self) -> None:
+        return None

@@ -9,10 +9,19 @@ class OutputBuffer:
     def __init__(self, max_chars: int = 20000) -> None:
         self.max_chars = max_chars
         self._text = ""
+        self._total = 0
 
     def append(self, data: str) -> None:
         clean = _ANSI.sub("", data).replace("\r\n", "\n").replace("\r", "")
+        self._total += len(clean)
         self._text = (self._text + clean)[-self.max_chars :]
+
+    def mark(self) -> int:
+        return self._total
+
+    def since(self, mark: int) -> str:
+        new = self._total - mark
+        return self.tail(new) if new > 0 else ""
 
     def tail(self, chars: int | None = None) -> str:
         if chars is None or chars >= len(self._text):

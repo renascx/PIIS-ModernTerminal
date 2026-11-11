@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     approval_mode: str = "confirm"  # confirm | readonly_auto
     connect_timeout: float = 10.0
     output_buffer_chars: int = 20000
+    audit_db: str = "audit.db"
+    command_wait: float = 1.0
+    agent_max_steps: int = 6
 
 
 class AISettings(BaseModel):
