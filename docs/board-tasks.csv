@@ -1,0 +1,25 @@
+Key,Title,Assignee,Role,Stage,Status,Description
+PIIS-1,Собрать требования и пользовательские сценарии,Андрей,Product Owner,0,Done,docs/requirements.md
+PIIS-2,Описать роли и RACI-матрицу,Роман,Тимлид,0,Done,docs/roles.md
+PIIS-3,Подготовить README и roadmap,Роман,Тимлид,0,Done,README.md и docs/roadmap.md
+PIIS-4,Спроектировать архитектуру,Всеволод,Backend,0,Done,docs/architecture.md
+PIIS-5,Каркас FastAPI и конфигурация,Всеволод,Backend,1,Done,backend/app
+PIIS-6,Интерфейс AIProvider и клиент Ollama,Всеволод,Backend,1,Done,backend/app/ai
+PIIS-7,Модуль оценки риска команд (safety),Всеволод,Backend,1,Done,backend/app/ai/safety.py
+PIIS-8,Автотесты модуля safety,Ярослав,ML,1,Done,backend/tests
+PIIS-9,Системный промпт сетевого инженера,Ярослав,ML,1,Done,backend/app/ai/prompts.py
+PIIS-10,Коннектор SSH (asyncssh),Всеволод,Backend,2,To Do,
+PIIS-11,Коннектор Telnet,Всеволод,Backend,2,To Do,
+PIIS-12,Реестр сессий и WebSocket терминала,Всеволод,Backend,2,To Do,
+PIIS-13,Цикл агента с tool-calling,Всеволод,Backend,3,To Do,
+PIIS-14,Подтверждение команд и журнал аудита,Всеволод,Backend,3,To Do,
+PIIS-15,Эталонный набор из 30 сценариев настройки,Ярослав,Data,3,To Do,
+PIIS-16,Оценка качества модели на эталонном наборе,Ярослав,ML,6,To Do,
+PIIS-17,Интерфейс терминала (xterm.js) и дерево хостов,Виталий,Frontend,4,To Do,
+PIIS-18,Панель чата и диалог подтверждения,Виталий,Frontend,4,To Do,
+PIIS-19,Дашборд статистики команд,Виталий,Frontend,4,To Do,
+PIIS-20,Dockerfile и docker-compose,Всеволод,DevOps,5,To Do,
+PIIS-21,CI в GitHub Actions (тесты и линтер),Всеволод,DevOps,5,To Do,
+PIIS-22,Мониторинг Prometheus/Grafana,Всеволод,DevOps,5,To Do,
+PIIS-23,Приёмка этапов и приоритизация backlog,Андрей,Product Owner,6,To Do,
+PIIS-24,Подготовка презентации и защиты,Роман,Тимлид,6,To Do,
