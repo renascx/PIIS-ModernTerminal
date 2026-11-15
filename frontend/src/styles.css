@@ -1,0 +1,350 @@
+:root {
+  --bg: #12151a;
+  --panel: #1a1f27;
+  --line: #2b3340;
+  --text: #e4e8ee;
+  --muted: #8b95a5;
+  --accent: #4c8dff;
+  --ok: #3ca56b;
+  --warn: #d9a02b;
+  --danger: #e0524d;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 system-ui, sans-serif;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-size: 15px;
+}
+
+h2 {
+  margin: 16px 0 8px;
+}
+
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: 48px 1fr;
+  height: 100vh;
+}
+
+header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+header nav {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+aside {
+  padding: 8px 16px;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+}
+
+main {
+  min-width: 0;
+  min-height: 0;
+  padding: 12px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 12px;
+  height: 100%;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+label.mode {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+input,
+select {
+  padding: 6px 8px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font: inherit;
+}
+
+button {
+  padding: 6px 12px;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: 4px;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+button.small {
+  padding: 0 8px;
+}
+
+button.link {
+  padding: 0;
+  background: none;
+  color: var(--text);
+  text-align: left;
+}
+
+button.tab {
+  background: none;
+  color: var(--muted);
+}
+
+button.tab.active {
+  color: var(--text);
+  background: var(--bg);
+}
+
+.connect button[type="submit"] {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.sessions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sessions li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+
+.sessions li.selected {
+  background: var(--bg);
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.empty {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.terminal-wrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: #000;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.terminal {
+  flex: 1;
+  min-height: 0;
+  padding: 8px;
+}
+
+.status {
+  padding: 4px 10px;
+  font-size: 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.status-open {
+  color: var(--ok);
+}
+
+.status-closed {
+  color: var(--danger);
+}
+
+.assistant {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.messages {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.message {
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+}
+
+.message-user {
+  margin-left: 32px;
+  background: #223a63;
+}
+
+.message-assistant {
+  margin-right: 32px;
+  background: var(--bg);
+}
+
+.message-system {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.pending {
+  margin: 8px 0;
+  padding: 10px;
+  background: var(--bg);
+  border: 1px solid var(--warn);
+  border-radius: 6px;
+}
+
+.pending-dangerous {
+  border-color: var(--danger);
+}
+
+.pending code {
+  display: block;
+  margin: 8px 0;
+  padding: 6px 8px;
+  background: #000;
+  border-radius: 4px;
+}
+
+.pending-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  padding: 0 6px;
+  color: #000;
+  background: var(--warn);
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.pending-dangerous .badge {
+  background: var(--danger);
+  color: #fff;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.chat-input input {
+  flex: 1;
+}
+
+.audit table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.audit th,
+.audit td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.audit-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 48px auto 1fr;
+    height: auto;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .terminal {
+    height: 360px;
+  }
+
+  .assistant {
+    height: 420px;
+  }
+}
