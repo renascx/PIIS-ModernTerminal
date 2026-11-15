@@ -1,4 +1,5 @@
 import re
+from collections.abc import Callable
 
 _ANSI = re.compile(r"\x1b\[[0-9;?]*[ -/]*[@-~]")
 
@@ -10,11 +11,15 @@ class OutputBuffer:
         self.max_chars = max_chars
         self._text = ""
         self._total = 0
+        self.listeners: list[Callable[[str], None]] = []
 
     def append(self, data: str) -> None:
         clean = _ANSI.sub("", data).replace("\r\n", "\n").replace("\r", "")
         self._total += len(clean)
         self._text = (self._text + clean)[-self.max_chars :]
+        if clean:
+            for listener in list(self.listeners):
+                listener(clean)
 
     def mark(self) -> int:
         return self._total
