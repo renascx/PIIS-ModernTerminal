@@ -8,13 +8,13 @@ PIIS-6,Интерфейс AIProvider и клиент Ollama,Всеволод,Bac
 PIIS-7,Модуль оценки риска команд (safety),Всеволод,Backend,1,Done,backend/app/ai/safety.py
 PIIS-8,Автотесты модуля safety,Ярослав,ML,1,Done,backend/tests
 PIIS-9,Системный промпт сетевого инженера,Ярослав,ML,1,Done,backend/app/ai/prompts.py
-PIIS-10,Коннектор SSH (asyncssh),Всеволод,Backend,2,To Do,
-PIIS-11,Коннектор Telnet,Всеволод,Backend,2,To Do,
-PIIS-12,Реестр сессий и WebSocket терминала,Всеволод,Backend,2,To Do,
-PIIS-13,Цикл агента с tool-calling,Всеволод,Backend,3,To Do,
-PIIS-14,Подтверждение команд и журнал аудита,Всеволод,Backend,3,To Do,
-PIIS-15,Эталонный набор из 30 сценариев настройки,Ярослав,Data,3,To Do,
-PIIS-16,Оценка качества модели на эталонном наборе,Ярослав,ML,6,To Do,
+PIIS-10,Коннектор SSH (asyncssh),Всеволод,Backend,2,Done,backend/app/connectors/ssh.py
+PIIS-11,Коннектор Telnet,Всеволод,Backend,2,Done,backend/app/connectors/telnet.py
+PIIS-12,Реестр сессий и API сессий,Всеволод,Backend,2,Done,backend/app/session_registry.py
+PIIS-13,Цикл агента с tool-calling,Всеволод,Backend,3,Done,backend/app/ai/agent.py
+PIIS-14,Подтверждение команд и журнал аудита,Всеволод,Backend,3,Done,backend/app/audit.py
+PIIS-15,Эталонный набор из 32 сценариев настройки,Ярослав,Data,3,Done,backend/evaluation/scenarios.json
+PIIS-16,Прогон оценки на реальной модели и анализ метрик,Ярослав,ML,6,To Do,Скрипт готов (PIIS-26); нужен запуск с Ollama
 PIIS-17,Интерфейс терминала (xterm.js) и дерево хостов,Виталий,Frontend,4,To Do,
 PIIS-18,Панель чата и диалог подтверждения,Виталий,Frontend,4,To Do,
 PIIS-19,Дашборд статистики команд,Виталий,Frontend,4,To Do,
@@ -23,3 +23,6 @@ PIIS-21,CI в GitHub Actions (тесты и линтер),Всеволод,DevOp
 PIIS-22,Мониторинг Prometheus/Grafana,Всеволод,DevOps,5,To Do,
 PIIS-23,Приёмка этапов и приоритизация backlog,Андрей,Product Owner,6,To Do,
 PIIS-24,Подготовка презентации и защиты,Роман,Тимлид,6,To Do,
+PIIS-25,WebSocket терминала,Всеволод,Backend,4,To Do,
+PIIS-26,Скрипт оценки на эталонных сценариях,Ярослав,ML,3,Done,backend/evaluation
+PIIS-27,Сверка выводов устройств в сценариях с реальным оборудованием,Ярослав,Data,6,To Do,Во всех сценариях verified=false
