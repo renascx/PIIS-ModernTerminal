@@ -3,6 +3,7 @@ import threading
 from datetime import datetime, timezone
 
 from .config import settings
+from .metrics import COMMANDS
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS audit (
@@ -42,6 +43,7 @@ class AuditLog:
                 conn.commit()
             finally:
                 conn.close()
+        COMMANDS.labels(risk, decision, source).inc()
 
     def list(self, limit: int = 100) -> list[dict[str, object]]:
         with self._lock:

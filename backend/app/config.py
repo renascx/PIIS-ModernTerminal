@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     audit_db: str = "audit.db"
     command_wait: float = 1.0
     agent_max_steps: int = 6
+    static_dir: str = ""
 
 
 class AISettings(BaseModel):

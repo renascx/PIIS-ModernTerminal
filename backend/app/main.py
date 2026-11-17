@@ -1,14 +1,18 @@
+import time
 from contextlib import asynccontextmanager
 
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Response
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from pydantic import BaseModel
 
 from .ai import safety
 from .ai.ollama_provider import OllamaProvider
 from .config import APPROVAL_MODES, AISettings, ai_settings, settings
+from .metrics import HTTP_SECONDS, SESSIONS
 from .routes import assistant, sessions, terminal
 from .session_registry import registry
+from .static import mount_static
 
 
 @asynccontextmanager
@@ -21,6 +25,24 @@ app = FastAPI(title="PIIS-ModernTerminal", lifespan=lifespan)
 app.include_router(sessions.router)
 app.include_router(assistant.router)
 app.include_router(terminal.router)
+SESSIONS.set_function(lambda: len(registry.list()))
+
+
+@app.middleware("http")
+async def track_requests(request: Request, call_next):
+    start = time.perf_counter()
+    response = await call_next(request)
+    route = request.scope.get("route")
+    path = route.path if route else "unmatched"
+    HTTP_SECONDS.labels(request.method, path, str(response.status_code)).observe(
+        time.perf_counter() - start
+    )
+    return response
+
+
+@app.get("/metrics")
+async def metrics() -> Response:
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
 class SafetyRequest(BaseModel):
@@ -69,3 +91,6 @@ async def check_commands(req: SafetyRequest) -> list[dict[str, object]]:
         }
         for a in safety.assess_many(req.commands)
     ]
+
+
+mount_static(app, settings.static_dir)
