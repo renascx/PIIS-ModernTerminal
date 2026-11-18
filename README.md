@@ -16,7 +16,7 @@ ACL и т. п.) и **выполняет их только после подтв�
 | 2 | Коннекторы SSH/Telnet, реестр сессий, API сессий | готово |
 | 3 | Цикл агента, подтверждение команд, журнал аудита, 32 эталонных сценария, скрипт оценки | готово |
 | 4 | WebSocket терминала, frontend (терминал, чат, подтверждение, журнал) | готово, кроме дашборда |
-| 5 | Docker, CI/CD, мониторинг | Docker готов, CI и мониторинг впереди |
+| 5 | Docker, CI/CD, мониторинг, раздача frontend | готово, образ и CI ещё не запускались |
 | 6 | Прогон оценки на реальной модели, метрики, презентация, защита | впереди |
 
 ## Документация
@@ -52,20 +52,27 @@ npm run dev                   # http://localhost:5173
 npm test
 ```
 
-Backend в Docker (порт открыт только на localhost, Ollama берётся с хоста):
+Всё вместе в Docker (порты открыты только на localhost, Ollama берётся с хоста):
 
 ```bash
 cd backend
 docker compose up --build
 ```
 
-Сборка образа пока не проверялась на реальном Docker, а собранный frontend из контейнера не раздаётся.
+- интерфейс и API: http://localhost:8000 (собранный frontend раздаёт сам backend);
+- Prometheus: http://localhost:9090, метрики backend: `/metrics`;
+- Grafana: http://localhost:3000, логин `admin`, пароль из переменной `GRAFANA_PASSWORD` (по умолчанию `admin`, лучше сменить).
+
+Сборка образа и compose пока не запускались на реальном Docker: их проверяет CI на GitHub.
+
+Тесты и сборка проверяются автоматически в GitHub Actions (`.github/workflows/ci.yml`):
 
 ## API
 
 | Метод и путь | Назначение |
 |--------------|-----------|
 | `GET /api/health` | проверка работы |
+| `GET /metrics` | метрики для Prometheus |
 | `GET`, `PUT /api/ai/settings` | URL Ollama, модель, режим подтверждения |
 | `GET /api/ai/models` | список моделей Ollama |
 | `POST /api/safety/check` | оценка риска списка команд |
