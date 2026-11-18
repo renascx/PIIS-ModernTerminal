@@ -18,13 +18,13 @@ PIIS-16,Прогон оценки на реальной модели и анал
 PIIS-17,Интерфейс терминала (xterm.js) и список сессий,Виталий,Frontend,4,Done,frontend/src
 PIIS-18,Панель чата и диалог подтверждения,Виталий,Frontend,4,Done,frontend/src/components/AssistantPanel.tsx
 PIIS-19,Дашборд статистики команд,Виталий,Frontend,4,To Do,
-PIIS-20,Dockerfile и docker-compose для backend,Всеволод,DevOps,5,Done,backend/Dockerfile; сборка образа не проверялась
-PIIS-21,CI в GitHub Actions (тесты и линтер),Всеволод,DevOps,5,To Do,
-PIIS-22,Мониторинг Prometheus/Grafana,Всеволод,DevOps,5,To Do,
+PIIS-20,Dockerfile и docker-compose,Всеволод,DevOps,5,Done,backend/Dockerfile; образ ещё не собирался локально
+PIIS-21,CI в GitHub Actions (тесты и сборка),Всеволод,DevOps,5,Done,.github/workflows/ci.yml; ещё не запускался на GitHub
+PIIS-22,Мониторинг Prometheus/Grafana,Всеволод,DevOps,5,Done,backend/monitoring и /metrics; в Docker не запускался
 PIIS-23,Приёмка этапов и приоритизация backlog,Андрей,Product Owner,6,To Do,
 PIIS-24,Подготовка презентации и защиты,Роман,Тимлид,6,To Do,
 PIIS-25,WebSocket терминала,Всеволод,Backend,4,Done,backend/app/routes/terminal.py
 PIIS-26,Скрипт оценки на эталонных сценариях,Ярослав,ML,3,Done,backend/evaluation
 PIIS-27,Сверка выводов устройств в сценариях с реальным оборудованием,Ярослав,Data,6,To Do,Во всех сценариях verified=false
-PIIS-28,Раздача собранного frontend из Docker и проверка сборки образа,Всеволод,DevOps,5,To Do,
+PIIS-28,Раздача собранного frontend из backend,Всеволод,DevOps,5,Done,backend/app/static.py; проверено локально без Docker
 PIIS-29,Доводка системного промпта по результатам прогона,Ярослав,ML,6,To Do,После PIIS-16

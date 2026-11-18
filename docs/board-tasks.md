@@ -11,8 +11,8 @@
 
 **Всеволод (DevOps + Backend):** готово: PIIS-4 архитектура, PIIS-5 каркас FastAPI, PIIS-6 провайдер Ollama,
 PIIS-7 модуль safety, PIIS-10–12 коннекторы и реестр сессий, PIIS-13–14 цикл агента, подтверждение и аудит,
-PIIS-20 Docker, PIIS-25 WebSocket терминала. Осталось: PIIS-21 CI, PIIS-22 мониторинг,
-PIIS-28 раздача frontend из Docker.
+PIIS-20 Docker, PIIS-21 CI, PIIS-22 мониторинг, PIIS-25 WebSocket терминала, PIIS-28 раздача frontend.
+Осталось: первый запуск CI и Docker-образа на GitHub.
 
 **Ярослав (ML + Data):** готово: PIIS-8 тесты safety, PIIS-9 системный промпт, PIIS-15 эталонный набор,
 PIIS-26 скрипт оценки. Осталось: PIIS-16 прогон на реальной модели, PIIS-27 сверка выводов с оборудованием,

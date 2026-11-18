@@ -29,8 +29,21 @@ backend/evaluation        оценка качества модели (отдел
    ├─ dataset.py          загрузка и проверка датасета
    └─ runner.py           запуск агента на сценариях и отчёт
 
-backend/Dockerfile, backend/docker-compose.yml   запуск backend в контейнере
+backend/Dockerfile          сборка frontend и backend в один образ
+backend/docker-compose.yml  backend, Prometheus и Grafana
+backend/monitoring/         настройки Prometheus и Grafana (источник данных, дашборд)
+.github/workflows/ci.yml    CI: тесты backend и frontend, сборка образа
 ```
+
+## Мониторинг
+Backend отдаёт метрики на `/metrics`: число команд по уровню риска, решению и источнику
+(`piis_commands_total`), число открытых сессий (`piis_sessions_active`) и время HTTP-запросов
+(`piis_http_request_seconds`). Prometheus собирает их раз в 15 секунд, Grafana показывает готовый дашборд.
+
+## Раздача frontend
+В Docker образ собирает frontend на Node и кладёт результат в `/app/static`. Если задана
+переменная `STATIC_DIR`, backend отдаёт эти файлы на `/`, поэтому отдельный веб-сервер не нужен.
+При разработке интерфейс запускают отдельно (`npm run dev`), Vite проксирует `/api` на backend.
 
 ## Frontend
 - Форма подключения и список сессий.
