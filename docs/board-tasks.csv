@@ -1,5 +1,5 @@
 Key,Title,Assignee,Role,Stage,Status,Description
-PIIS-1,Собрать требования и пользовательские сценарии,Андрей,Product Owner,0,Done,docs/requirements.md
+PIIS-1,Собрать требования и пользовательские сценарии,Роман,Product Owner,0,Done,docs/requirements.md
 PIIS-2,Описать роли и RACI-матрицу,Роман,Тимлид,0,Done,docs/roles.md
 PIIS-3,Подготовить README и roadmap,Роман,Тимлид,0,Done,README.md и docs/roadmap.md
 PIIS-4,Спроектировать архитектуру,Всеволод,Backend,0,Done,docs/architecture.md
@@ -14,17 +14,17 @@ PIIS-12,Реестр сессий и API сессий,Всеволод,Backend,2
 PIIS-13,Цикл агента с tool-calling,Всеволод,Backend,3,Done,backend/app/ai/agent.py
 PIIS-14,Подтверждение команд и журнал аудита,Всеволод,Backend,3,Done,backend/app/audit.py
 PIIS-15,Эталонный набор из 32 сценариев настройки,Ярослав,Data,3,Done,backend/evaluation/scenarios.json
-PIIS-16,Прогон оценки на реальной модели и анализ метрик,Ярослав,ML,6,To Do,Скрипт готов (PIIS-26); нужен запуск с Ollama
+PIIS-16,Прогон оценки на реальной модели и анализ метрик,Ярослав,ML,6,Done,qwen3:8b: command_accuracy 0.781 (25/32) dangerous_gated 1.00; отчёт docs/model-evaluation-qwen3-8b.md; файлы передаются Ярославом в репозиторий
 PIIS-17,Интерфейс терминала (xterm.js) и список сессий,Виталий,Frontend,4,Done,frontend/src
 PIIS-18,Панель чата и диалог подтверждения,Виталий,Frontend,4,Done,frontend/src/components/AssistantPanel.tsx
-PIIS-19,Дашборд статистики команд,Виталий,Frontend,4,To Do,
-PIIS-20,Dockerfile и docker-compose,Всеволод,DevOps,5,Done,backend/Dockerfile; образ ещё не собирался локально
-PIIS-21,CI в GitHub Actions (тесты и сборка),Всеволод,DevOps,5,Done,.github/workflows/ci.yml; ещё не запускался на GitHub
-PIIS-22,Мониторинг Prometheus/Grafana,Всеволод,DevOps,5,Done,backend/monitoring и /metrics; в Docker не запускался
-PIIS-23,Приёмка этапов и приоритизация backlog,Андрей,Product Owner,6,To Do,
-PIIS-24,Подготовка презентации и защиты,Роман,Тимлид,6,To Do,
+PIIS-19,Дашборд статистики команд,Виталий,Frontend,4,Done,Закрыто: статистика команд отображается в Grafana (backend/monitoring)
+PIIS-20,Dockerfile и docker-compose,Всеволод,DevOps,5,Done,backend/Dockerfile; образ собран и запущен локально, подключение к реальному коммутатору проверено
+PIIS-21,CI в GitHub Actions (тесты и сборка),Всеволод,DevOps,5,Done,.github/workflows/ci.yml; запущен на GitHub, проходит
+PIIS-22,Мониторинг Prometheus/Grafana,Всеволод,DevOps,5,Done,backend/monitoring и /metrics; запущен в Docker, Prometheus и Grafana отвечают
+PIIS-23,Приёмка этапов и приоритизация backlog,Роман,Product Owner,6,Done,Чек-лист приёмки: docs/stage-acceptance.md
+PIIS-24,Подготовка презентации и защиты,Роман,Тимлид,6,Done,
 PIIS-25,WebSocket терминала,Всеволод,Backend,4,Done,backend/app/routes/terminal.py
 PIIS-26,Скрипт оценки на эталонных сценариях,Ярослав,ML,3,Done,backend/evaluation
-PIIS-27,Сверка выводов устройств в сценариях с реальным оборудованием,Ярослав,Data,6,To Do,Во всех сценариях verified=false
-PIIS-28,Раздача собранного frontend из backend,Всеволод,DevOps,5,Done,backend/app/static.py; проверено локально без Docker
-PIIS-29,Доводка системного промпта по результатам прогона,Ярослав,ML,6,To Do,После PIIS-16
+PIIS-27,Сверка выводов устройств в сценариях с реальным оборудованием,Ярослав,Data,6,Done,Во всех сценариях verified=false; тест на реальном коммутаторе проведён, сверка device_outputs и синтаксиса Eltex (vlan-05) остаётся
+PIIS-28,Раздача собранного frontend из backend,Всеволод,DevOps,5,Done,backend/app/static.py; проверено локально и в Docker
+PIIS-29,Доводка системного промпта по результатам прогона,Ярослав,ML,6,Done,Промпт с правилами 1-12 (backend/app/ai/prompts.py); пакет handoff/yaroslav-model-tuning
