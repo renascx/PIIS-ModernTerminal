@@ -15,9 +15,9 @@ ACL и т. п.) и **выполняет их только после подтв�
 | 1 | Каркас backend, Ollama-провайдер, модуль безопасности команд | готово |
 | 2 | Коннекторы SSH/Telnet, реестр сессий, API сессий | готово |
 | 3 | Цикл агента, подтверждение команд, журнал аудита, 32 эталонных сценария, скрипт оценки | готово |
-| 4 | WebSocket терминала, frontend (терминал, чат, подтверждение, журнал) | готово, кроме дашборда |
-| 5 | Docker, CI/CD, мониторинг, раздача frontend | готово, образ и CI ещё не запускались |
-| 6 | Прогон оценки на реальной модели, метрики, презентация, защита | впереди |
+| 4 | WebSocket терминала, frontend (терминал, чат, подтверждение, журнал) | готово (статистика команд в Grafana) |
+| 5 | Docker, CI/CD, мониторинг, раздача frontend | готово, стенд запущен в Docker, CI проходит |
+| 6 | Прогон оценки на реальной модели, метрики, презентация, защита | оценка выполнена (0.781), тест на реальном коммутаторе пройден; впереди приёмка и защита |
 
 ## Документация
 
@@ -26,6 +26,8 @@ ACL и т. п.) и **выполняет их только после подтв�
 - [docs/roles.md](docs/roles.md) — роли, зоны ответственности, RACI
 - [docs/roadmap.md](docs/roadmap.md) — план по этапам
 - [docs/board-tasks.md](docs/board-tasks.md) и [docs/board-tasks.csv](docs/board-tasks.csv) — задачи для Jira/Trello
+- [docs/model-evaluation-qwen3-8b.md](docs/model-evaluation-qwen3-8b.md) — результаты оценки модели
+- [docs/stage-acceptance.md](docs/stage-acceptance.md) — приёмка этапов
 
 ## Быстрый старт
 
@@ -61,9 +63,9 @@ docker compose up --build
 
 - интерфейс и API: http://localhost:8000 (собранный frontend раздаёт сам backend);
 - Prometheus: http://localhost:9090, метрики backend: `/metrics`;
-- Grafana: http://localhost:3000, логин `admin`, пароль из переменной `GRAFANA_PASSWORD` (по умолчанию `admin`, лучше сменить).
+- Grafana: http://localhost:3000, логин `admin`, пароль из переменной `GRAFANA_PASSWORD`.
 
-Сборка образа и compose пока не запускались на реальном Docker: их проверяет CI на GitHub.
+Сборка образа и compose проверены на реальном Docker (Docker Desktop, Windows): backend, Prometheus и Grafana поднимаются, backend видит Ollama на хосте.
 
 Тесты и сборка проверяются автоматически в GitHub Actions (`.github/workflows/ci.yml`):
 
@@ -99,8 +101,12 @@ python -m evaluation.runner --model qwen3:8b --report report.json   # с лок�
 ```
 
 Метрики: `command_accuracy` (цель ≥ 0.90) и `dangerous_gated` (цель 1.00). Выводы устройств в
-сценариях синтетические и пока не сверены с реальным оборудованием. Прогон с настоящей моделью
-ещё не выполнялся.
+сценариях синтетические и пока не сверены с реальным оборудованием.
+
+Результат на локальной модели `qwen3:8b` (температура 0, контекст 8192): `command_accuracy` 0.781
+(25 из 32), `dangerous_gated` 1.00. Подробности в
+[docs/model-evaluation-qwen3-8b.md](docs/model-evaluation-qwen3-8b.md). Подключение, диалог с
+ассистентом и выполнение команд с подтверждением проверены на реальном коммутаторе.
 
 ## Команда
 
@@ -108,6 +114,5 @@ python -m evaluation.runner --model qwen3:8b --report report.json   # с лок�
 |------|----------|
 | ML + Data Engineer | Ярослав |
 | DevOps + Backend | Всеволод |
-| Product Owner / Аналитик | Андрей |
 | Frontend / Визуализатор | Виталий |
-| Тимлид / Scrum-мастер | Роман |
+| Тимлид + Аналитик | Роман |
