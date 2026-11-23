@@ -46,7 +46,16 @@ class AgentReply:
 
 
 def default_provider() -> AIProvider:
-    return OllamaProvider(ai_settings.ollama_url, ai_settings.model, settings.ollama_timeout)
+    return OllamaProvider(
+        ai_settings.ollama_url,
+        ai_settings.model,
+        settings.ollama_timeout,
+        options={
+            "temperature": settings.ollama_temperature,
+            "num_ctx": settings.ollama_num_ctx,
+            "num_predict": settings.ollama_num_predict,
+        },
+    )
 
 
 def get_command(call: dict) -> str | None:

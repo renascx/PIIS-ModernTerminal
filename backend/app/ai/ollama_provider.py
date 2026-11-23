@@ -14,9 +14,11 @@ class OllamaProvider(AIProvider):
         model: str,
         timeout: float = 120.0,
         transport: httpx.AsyncBaseTransport | None = None,
+        options: dict[str, Any] | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.model = model
+        self.options = options or {}
         self._client = httpx.AsyncClient(
             base_url=self.base_url, timeout=timeout, transport=transport
         )
@@ -43,6 +45,8 @@ class OllamaProvider(AIProvider):
         }
         if tools:
             payload["tools"] = tools
+        if self.options:
+            payload["options"] = self.options
         resp = await self._client.post("/api/chat", json=payload)
         resp.raise_for_status()
         msg = resp.json().get("message", {})

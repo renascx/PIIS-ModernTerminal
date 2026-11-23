@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     ollama_url: str = "http://localhost:11434"
     ollama_model: str = "qwen3:8b"
     ollama_timeout: float = 120.0
+    ollama_temperature: float = 0.0
+    ollama_num_ctx: int = 8192
+    ollama_num_predict: int = 2048  # предел длины ответа, защита от зацикливания
     approval_mode: str = "confirm"  # confirm | readonly_auto
     connect_timeout: float = 10.0
     output_buffer_chars: int = 20000
